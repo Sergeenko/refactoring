@@ -1,0 +1,3 @@
+/home/urba/szkolenie/refactoring/build/CMakeFiles/main.dir
+/home/urba/szkolenie/refactoring/build/CMakeFiles/edit_cache.dir
+/home/urba/szkolenie/refactoring/build/CMakeFiles/rebuild_cache.dir
