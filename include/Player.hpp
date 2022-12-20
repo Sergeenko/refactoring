@@ -30,4 +30,10 @@ public:
         std::cout << l_result << std::endl;
         return l_result;
     }
+
+    void move(Position p_newPosition) override
+    {
+        m_currentPosition = p_newPosition;
+    }
+
 };

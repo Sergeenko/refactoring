@@ -8,6 +8,7 @@ public:
     virtual void fine(Amount) = 0;
     virtual void reward(Amount) = 0;
     virtual RollResult rollDice() = 0;
+    virtual void move(RollResult) = 0;
 
     virtual ~IPlayer() = 0;
 private:

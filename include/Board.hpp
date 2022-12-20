@@ -3,7 +3,7 @@
 
 struct Board
 {
-    std::vector<ISquare> m_square(
+    std::vector<ISquare> m_squares(
         StartSquare,
         PenaltySquare,
         PenaltySquare,
