@@ -2,7 +2,9 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include "Aliases.hpp"
+
 
 class IPlayer
 {
@@ -14,4 +16,5 @@ public:
     virtual void move(RollResult) = 0;
     virtual Position getPosition() const = 0;
     virtual int getMoney() const = 0;
+    virtual std::string_view getName() const = 0;
 };

@@ -3,14 +3,14 @@
 #include "IPlayer.hpp"
 #include "Aliases.hpp"
 #include <cstdlib>
-#include <iostream>
 #include <random>
 #include <utility>
+#include <string_view>
 
 class HumanPlayer : public IPlayer
 {
 public:
-    HumanPlayer(std::string p_name) : m_name(std::move(p_name)) {}
+    explicit HumanPlayer(std::string p_name) : m_name(std::move(p_name)) {}
 
     void fine(Amount p_amount) override
     {
@@ -27,12 +27,6 @@ public:
         std::uniform_int_distribution<> distrib(1, 6);
         auto l_resultOne = distrib(gen);
         auto l_resultTwo = distrib(gen);
-
-        std::cout << "Dice 1: "<< l_resultOne
-            << "   "
-            << "Dice 2: " << l_resultTwo
-            << std::endl;
-
         return l_resultOne + l_resultTwo;
     }
 
@@ -48,6 +42,10 @@ public:
     int getMoney() const override
     {
         return m_money;
+    }
+    std::string_view getName() const override
+    {
+        return m_name;
     }
 private:
     int m_money{5000};

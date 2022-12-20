@@ -29,5 +29,5 @@ public:
     }
 
 private:
-    size_t m_rewardValue {50};
+    size_t m_rewardValue {5};
 };
