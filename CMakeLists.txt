@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(my_test)
+project(refactoring)
 set(CMAKE_CXX_STANDARD 17)
 
 add_compile_options(
@@ -26,7 +26,7 @@ enable_testing()
 include(GoogleTest)
 #gtest_discover_tests(tests)
 
-#add_executable(my_test main.cpp)
+#add_executable(refactoring main.cpp)
 
 #target_link_libraries(
 #        test
