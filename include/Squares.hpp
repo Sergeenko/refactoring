@@ -5,14 +5,12 @@
 
 class StartSquare : public ISquare {
 public:
-    StartSquare() = default;
     void onEntry([[maybe_unused]] IPlayer& p_player) override {}
 };
 
 class PenaltySquare : public ISquare
 {
 public:
-    PenaltySquare() = default;
     void onEntry(IPlayer& p_player) override
     {
         p_player.fine(m_fineValue);
@@ -25,7 +23,6 @@ private:
 class RewardSquare : public ISquare
 {
 public:
-    RewardSquare() = default;
     void onEntry(IPlayer& p_player) override
     {
         p_player.reward(m_rewardValue);

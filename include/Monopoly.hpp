@@ -30,7 +30,6 @@ public:
         }
     }
 
-
     bool isEndGame()
     {
         return std::any_of(
