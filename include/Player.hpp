@@ -1,3 +1,5 @@
+#pragma once
+
 #include "IPlayer.hpp"
 #include "Aliases.hpp"
 #include <cstdlib>
@@ -8,8 +10,6 @@
 class HumanPlayer : public IPlayer
 {
 public:
-
-
     HumanPlayer(std::string p_name) : m_name(std::move(p_name)) {}
 
     void fine(Amount p_amount) override
@@ -36,4 +36,16 @@ public:
         m_currentPosition = p_newPosition;
     }
 
+    Position getPosition() const override
+    {
+        return m_currentPosition;
+    }
+    int getMoney() const override
+    {
+        return m_money;
+    }
+private:
+    int m_money{5000};
+    Position m_currentPosition{0};
+    std::string m_name;
 };

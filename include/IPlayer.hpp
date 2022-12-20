@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstdint>
 #include <string>
 #include "Aliases.hpp"
@@ -5,15 +7,11 @@
 class IPlayer
 {
 public:
+    virtual ~IPlayer() = default;
     virtual void fine(Amount) = 0;
     virtual void reward(Amount) = 0;
-    virtual RollResult rollDice() = 0;
+    virtual RollResult rollDice() const = 0;
     virtual void move(RollResult) = 0;
-
-    virtual ~IPlayer() = 0;
-private:
-    int m_money{5000};
-    Position m_currentPosition{0};
-    std::string m_name;
-    PlayerId m_playerId;
+    virtual Position getPosition() const = 0;
+    virtual int getMoney() const = 0;
 };

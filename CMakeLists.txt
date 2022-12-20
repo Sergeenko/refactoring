@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(ChangeMyName CXX)
+project(refactoring CXX)
 
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
@@ -18,8 +18,6 @@ add_executable(main
 target_include_directories(main PUBLIC include)
 #target_link_libraries(sample_test gmock_main gtest gmock)
 target_compile_features(main PUBLIC cxx_std_20)
-
-
 
 #enable_testing()
 #add_test(tests sample_test)
