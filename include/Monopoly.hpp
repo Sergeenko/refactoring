@@ -1,7 +1,6 @@
 #include <vector>
 #include <utility>
 
-
 class Monopoly
 {
 public:
@@ -15,4 +14,4 @@ private:
     std::vector<IPlayer> m_players;
     Board m_board;
 
-}
+};
