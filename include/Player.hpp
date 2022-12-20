@@ -20,6 +20,7 @@ public:
     {
         m_money += p_amount;
     }
+
     RollResult rollDice() const override
     {
         std::random_device rd;
@@ -39,16 +40,19 @@ public:
     {
         return m_currentPosition;
     }
+
     int getMoney() const override
     {
         return m_money;
     }
+
     std::string_view getName() const override
     {
         return m_name;
     }
+
 private:
     int m_money{5000};
-    Position m_currentPosition{0};
+    Position m_currentPosition;
     std::string m_name;
 };
