@@ -11,7 +11,7 @@ public:
     }
 
 private:
-    size_t m_fineValue {50};
+    size_t m_fineValue {150};
 };
 
 class RewardSquare : public ISquare
@@ -23,5 +23,5 @@ public:
     }
 
 private:
-    size_t m_rewardValue {100};
+    size_t m_rewardValue {50};
 };

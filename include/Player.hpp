@@ -1,9 +1,33 @@
 #include "IPlayer.hpp"
+#include "Aliases.hpp"
+#include <cstdlib>
+#include <iostream>
+#include <random>
+#include <utility>
 
 class HumanPlayer : public IPlayer
 {
 public:
-    void fine(size_t p_amount) override;
-    void reward(size_t p_amount) override;
-    uint8_t rollDice() override;
+
+
+    HumanPlayer(std::string p_name) : m_name(std::move(p_name)) {}
+
+    void fine(Amount p_amount) override
+    {
+        m_money -= p_amount;
+    }
+    void reward(Amount p_amount) override
+    {
+        m_money += p_amount;
+    }
+    RollResult rollDice() const override
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(2, 12);
+        auto l_result = distrib(gen);
+
+        std::cout << l_result << std::endl;
+        return l_result;
+    }
 };
