@@ -11,26 +11,14 @@ class Monopoly
 {
 public:
 
-    Monopoly(std::vector<std::unique_ptr<IPlayer>> p_players, Board p_board)
+    Monopoly(std::vector<std::unique_ptr<IPlayer>> p_players, std::shared_ptr<CyclicBoard> p_board)
         : m_players(std::move(p_players)), m_board(std::move(p_board)) {}
 
     void makeRound()
     {
         for(auto& player : m_players)
         {
-            auto l_rollResult = player->rollDice();
-            std::cout << player->getName() << " rolls: " << static_cast<unsigned>(l_rollResult) << '\n';
-
-            auto l_oldPosition = player->getPosition();
-            auto l_newPosition = (player->getPosition() + l_rollResult) % m_board.m_squares.size();
-            if (l_newPosition < l_oldPosition)
-            {
-                player->reward(m_startReward);
-            }
-
-            player->move(l_newPosition);
-            m_board.m_squares[l_newPosition]->onEntry(*player);
-            std::cout << player->getName() << " has: " << player->getMoney() << '\n';
+            player->makeMove();
         }
     }
 
@@ -47,6 +35,6 @@ public:
 
 private:
     std::vector<std::unique_ptr<IPlayer>> m_players;
-    Board m_board;
+    std::shared_ptr<CyclicBoard> m_board;
     Amount m_startReward{200};
 };

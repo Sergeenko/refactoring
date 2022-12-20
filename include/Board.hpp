@@ -5,30 +5,28 @@
 #include <memory>
 #include "IBoard.hpp"
 
-class iterator;
-
 class CyclicBoard : public IBoard
 {
 public:
+    class iterator;
+    CyclicBoard(){}
 
-    CyclicBoard()
+    CyclicBoard::iterator begin()
     {
-        m_startingSquare = 0;
+        return m_iterator.begin();
     }
-
-private:
 
     class iterator
     {
     public:
-        iterator(std::vector<std::unique_ptr<ISquare>>& p_squares, size_t p_index)
+        iterator(std::vector<std::shared_ptr<ISquare>>& p_squares, size_t p_index)
             : m_squares(p_squares), m_currentIndex(p_index) {}
 
         iterator& next()
         {
             if (++m_currentIndex == m_squares.size())
             {
-                m_currentIndex = 0;
+                m_currentIndex = m_startingSquare;
             }
 
            return *this;
@@ -39,48 +37,53 @@ private:
             return *m_squares[m_currentIndex];
         }
 
+        iterator begin()
+        {
+            return iterator(m_squares, m_startingSquare);
+        }
+
     private:
+        std::vector<std::shared_ptr<ISquare>>& m_squares;
         size_t m_currentIndex{0};
-        std::vector<std::unique_ptr<ISquare>>& m_squares;
-    }
+        size_t m_startingSquare{0};
+    };
 
-    std::vector<std::unique_ptr<ISquare>> m_squares{
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<PenaltySquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>(),
-
-        std::make_unique<StartSquare>(),
-
-        std::make_unique<RewardSquare>(),
-        std::make_unique<RewardSquare>()};
+    std::vector<std::shared_ptr<ISquare>> m_squares{
+        std::make_shared<StartSquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<PenaltySquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>(),
+        std::make_shared<RewardSquare>()};
+    CyclicBoard::iterator m_iterator = CyclicBoard::iterator(m_squares, 0);
 };
