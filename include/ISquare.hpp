@@ -1,6 +1,8 @@
+class IPlayer;
+
 class ISquare
 {
-    virtual void onEntry(const IPlayer&) = 0;
+    virtual void onEntry(IPlayer&) = 0;
 
     virtual ~ISquare() = 0;
 };

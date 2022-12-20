@@ -1,5 +1,5 @@
 #include <vector>
-
+#include "Squares.hpp"
 
 struct Board
 {

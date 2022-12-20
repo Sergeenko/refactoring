@@ -1,5 +1,9 @@
 #include <vector>
 #include <utility>
+#include "Board.hpp"
+
+class IPlayer;
+
 
 class Monopoly
 {

@@ -1,7 +1,6 @@
-#include "../include/Monopoly.hpp"
-#include "../include/Player.hpp"
-#include "../include/Board.hpp"
-
+#include "Monopoly.hpp"
+#include "Player.hpp"
+#include "Board.hpp"
 
 
 int main()
