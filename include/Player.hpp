@@ -24,11 +24,16 @@ public:
     {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distrib(2, 12);
-        auto l_result = distrib(gen);
+        std::uniform_int_distribution<> distrib(1, 6);
+        auto l_resultOne = distrib(gen);
+        auto l_resultTwo = distrib(gen);
 
-        std::cout << l_result << std::endl;
-        return l_result;
+        std::cout << "Dice 1: "<< l_resultOne
+            << "   "
+            << "Dice 2: " << l_resultTwo
+            << std::endl;
+
+        return l_resultOne + l_resultTwo;
     }
 
     void move(Position p_newPosition) override
