@@ -3,6 +3,7 @@
 
 #include "Board.hpp"
 #include "Player.hpp"
+#include <memory>
 
 using testing::NiceMock;
 
@@ -21,7 +22,7 @@ public:
 
 class CyclicBoardMock : public IBoard
 {
-  MOCK_METHOD(void, onEntry, (IPlayer&), (override));
+  //MOCK_METHOD(void, onEntry, (IPlayer&), (override));
 
 };
 
@@ -44,7 +45,7 @@ TEST_F(BoardTest, checkCyclicity)
 
 struct PlayerTest : BoardTest
 {
-    HumanPlayer m_player{"TestPlayer", m_board.begin(), 5000, Dice{2}};
+    HumanPlayer m_player{"TestPlayer", std::make_unique<CyclicBoard::iterator>(m_board.begin()), 5000, Dice{2}};
     NiceMock<SquareMock> m_squareMock;
 };
 
@@ -59,9 +60,5 @@ TEST_F(PlayerTest, checkMoneyManagement)
 
 TEST_F(PlayerTest, aaa)
 {
-    EXPECT_CALL(m_squareMock, )
 
-
-    m_player.
-    ASSERT_EQ();
 }
