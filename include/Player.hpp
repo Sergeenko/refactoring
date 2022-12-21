@@ -8,11 +8,33 @@
 #include <string>
 #include <string_view>
 
+class Dice
+{
+public:
+    explicit Dice(size_t p_numberOfDice) : m_numberOfDice(p_numberOfDice) {}
+
+    RollResult roll()
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(1, 6);
+        auto l_resultOne = distrib(gen);
+        auto l_resultTwo = distrib(gen);
+        m_currentThrow = l_resultOne + l_resultTwo;
+
+        return m_currentThrow;
+    }
+
+private:
+    size_t m_numberOfDice;
+    RollResult m_currentThrow;
+};
+
 class HumanPlayer : public IPlayer
 {
 public:
-    explicit HumanPlayer(std::string p_name, CyclicBoard::iterator p_startingPosition)
-        : m_name(std::move(p_name)), m_currentPosition(std::move(p_startingPosition)) {}
+    explicit HumanPlayer(std::string p_name, CyclicBoard::iterator p_startingPosition, int p_startingMoney, Dice p_dice)
+        : m_name(std::move(p_name)), m_currentPosition(std::move(p_startingPosition)), m_money(p_startingMoney), m_dice(p_dice)  {}
 
     void subtractMoney(Amount p_amount) override
     {
@@ -23,19 +45,9 @@ public:
         m_money += p_amount;
     }
 
-    RollResult rollDice() const override
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distrib(1, 6);
-        auto l_resultOne = distrib(gen);
-        auto l_resultTwo = distrib(gen);
-        return l_resultOne + l_resultTwo;
-    }
-
     void makeMove() override
     {
-        auto l_rollResult = rollDice();
+        auto l_rollResult = m_dice.roll();
         std::cout << getName() << " rolls: " << static_cast<unsigned>(l_rollResult) << '\n';
 
         while (l_rollResult--)
@@ -58,7 +70,8 @@ public:
     }
 
 private:
-    int m_money{5000};
     std::string m_name;
-    typename CyclicBoard::iterator m_currentPosition;
+    CyclicBoard::iterator m_currentPosition;
+    int m_money;
+    Dice m_dice;
 };

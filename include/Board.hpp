@@ -29,15 +29,27 @@ public:
             return *m_squares[m_currentIndex];
         }
 
+        bool operator==(const iterator& other) const
+        {
+            return (m_currentIndex == other.m_currentIndex) and
+                (m_startingSquare == other.m_startingSquare) and
+                (&m_squares == & other.m_squares);
+        }
+
     private:
         std::vector<std::shared_ptr<ISquare>>& m_squares;
         size_t m_currentIndex;
-        size_t m_startingSquare;
+        const size_t m_startingSquare;
     };
 
-    typename CyclicBoard::iterator begin()
+    CyclicBoard::iterator& begin()
     {
-        return { m_squares, m_startPosition };
+        return CyclicBoard::iterator{ m_squares, m_startPosition };
+    }
+
+    size_t getSize() const
+    {
+        return m_squares.size();
     }
 private:
     size_t m_startPosition{0};
