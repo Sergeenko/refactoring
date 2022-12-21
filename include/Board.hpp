@@ -36,7 +36,7 @@ public:
         size_t m_currentIndex;
     };
 
-    iterator& begin()
+    iterator& begin() override
     {
         return m_startPosition;
     }

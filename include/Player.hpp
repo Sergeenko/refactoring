@@ -27,7 +27,7 @@ public:
 
 private:
     size_t m_numberOfDice;
-    RollResult m_currentThrow;
+    RollResult m_currentThrow{};
 };
 
 class HumanPlayer : public IPlayer
