@@ -15,7 +15,7 @@ int main()
 
     while(not l_monopoly.isEndGame())
     {
-    l_monopoly.makeRound();
+        l_monopoly.makeRound();
     }
 
     return 0;
