@@ -6,14 +6,12 @@
 class StartSquare : public ISquare {
 public:
     void onEntry([[maybe_unused]] IPlayer& p_player) override {}
-    void onPass([[maybe_unused]] IPlayer& p_player) override
+    void onPass(IPlayer& p_player) override
     {
         p_player.addMoney(m_bonusMoney);
     }
 private:
-
     Amount m_bonusMoney{200};
-
 };
 
 class PenaltySquare : public ISquare

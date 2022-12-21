@@ -6,18 +6,17 @@
 
 int main()
 {
-    auto l_cyclicBoard = std::make_shared<CyclicBoard>();
-    CyclicBoard::iterator l_startingIterator = l_cyclicBoard->begin();
+    CyclicBoard l_cyclicBoard;
     std::vector<std::unique_ptr<IPlayer>> l_players;
-    l_players.emplace_back(std::make_unique<HumanPlayer>("Staszek", l_startingIterator));
-    l_players.emplace_back(std::make_unique<HumanPlayer>("Waldek", l_startingIterator));
+    l_players.emplace_back(std::make_unique<HumanPlayer>("Staszek", l_cyclicBoard.begin()));
+    l_players.emplace_back(std::make_unique<HumanPlayer>("Waldek", l_cyclicBoard.begin()));
 
-    // Monopoly l_monopoly(l_players, l_cyclicBoard);
+     Monopoly l_monopoly(std::move(l_players), l_cyclicBoard);
 
-    // while(not l_monopoly.isEndGame())
-    // {
-    //    l_monopoly.makeRound();
-    // }
+     while(not l_monopoly.isEndGame())
+     {
+        l_monopoly.makeRound();
+     }
 
     return 0;
 }

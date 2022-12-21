@@ -11,7 +11,7 @@ class Monopoly
 {
 public:
 
-    Monopoly(std::vector<std::unique_ptr<IPlayer>> p_players, std::shared_ptr<CyclicBoard> p_board)
+    Monopoly(std::vector<std::unique_ptr<IPlayer>> p_players, CyclicBoard p_board)
         : m_players(std::move(p_players)), m_board(std::move(p_board)) {}
 
     void makeRound()
@@ -35,6 +35,6 @@ public:
 
 private:
     std::vector<std::unique_ptr<IPlayer>> m_players;
-    std::shared_ptr<CyclicBoard> m_board;
+    CyclicBoard m_board;
     Amount m_startReward{200};
 };

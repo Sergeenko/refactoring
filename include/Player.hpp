@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <random>
 #include <utility>
+#include <string>
 #include <string_view>
 
 class HumanPlayer : public IPlayer
@@ -65,5 +66,5 @@ public:
 private:
     int m_money{5000};
     std::string m_name;
-    CyclicBoard::iterator m_currentPosition;
+    typename CyclicBoard::iterator m_currentPosition;
 };
