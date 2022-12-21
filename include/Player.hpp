@@ -35,22 +35,16 @@ public:
 
     void makeMove() override
     {
-        // m_currentPosition = p_newPosition;
-
         auto l_rollResult = rollDice();
         std::cout << getName() << " rolls: " << static_cast<unsigned>(l_rollResult) << '\n';
 
-        // auto l_oldPosition = getPosition();
-        // auto l_newPosition = (getPosition() + l_rollResult) % m_board.m_squares.size();
-        // if (l_newPosition < l_oldPosition)
-        // {
-        //     addMoney(m_startReward);
-        // }
-
-        // makeMove(l_newPosition);
-        // m_board.m_squares[l_newPosition]->onEntry(*player);
+        while (l_rollResult--)
+        {
+            m_currentPosition.next();
+            m_currentPosition.currentSquare().onPass(*this);
+        }
+        m_currentPosition.currentSquare().onEntry(*this);
         std::cout << getName() << " has: " << getMoney() << '\n';
-
     }
 
     int getMoney() const override
