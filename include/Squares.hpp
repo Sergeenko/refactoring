@@ -46,6 +46,7 @@ public:
     void onEntry(IPlayer& p_player) override
     {
         p_player.addMoney(m_rewardValue);
+        m_rewardValue = 0;
     }
     void onPass(IPlayer& p_player) override
     {
