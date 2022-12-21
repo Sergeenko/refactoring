@@ -23,7 +23,7 @@ class CyclicBoardMock : public IBoard
 {
   MOCK_METHOD(void, onEntry, (IPlayer&), (override));
 
-}
+};
 
 struct BoardTest : public testing::Test
 {

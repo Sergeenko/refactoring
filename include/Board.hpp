@@ -8,7 +8,7 @@
 class CyclicBoard : public IBoard
 {
 public:
-    class iterator
+    class iterator : public IBoard::Iiterator
     {
     public:
         iterator(std::vector<std::shared_ptr<ISquare>>& p_squares, size_t p_index)
@@ -42,9 +42,9 @@ public:
         const size_t m_startingSquare;
     };
 
-    CyclicBoard::iterator& begin()
+    iterator& begin()
     {
-        return CyclicBoard::iterator{ m_squares, m_startPosition };
+        return m_startPosition;
     }
 
     size_t getSize() const
@@ -52,7 +52,7 @@ public:
         return m_squares.size();
     }
 private:
-    size_t m_startPosition{0};
+    //size_t m_startPosition{0};
     std::vector<std::shared_ptr<ISquare>> m_squares{
             std::make_shared<StartSquare>(),
             std::make_shared<PenaltySquare>(),
@@ -90,4 +90,5 @@ private:
             std::make_shared<RewardSquare>(),
             std::make_shared<RewardSquare>(),
             std::make_shared<RewardSquare>()};
+    CyclicBoard::iterator m_startPosition{m_squares, 0};
 };

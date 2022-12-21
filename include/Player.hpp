@@ -33,7 +33,7 @@ private:
 class HumanPlayer : public IPlayer
 {
 public:
-    explicit HumanPlayer(std::string p_name, CyclicBoard::iterator p_startingPosition, int p_startingMoney, Dice p_dice)
+    explicit HumanPlayer(std::string p_name, std::unique_ptr<IBoard::Iiterator> p_startingPosition, int p_startingMoney, Dice p_dice)
         : m_name(std::move(p_name)), m_currentPosition(std::move(p_startingPosition)), m_money(p_startingMoney), m_dice(p_dice)  {}
 
     void subtractMoney(Amount p_amount) override
@@ -52,10 +52,10 @@ public:
 
         while (l_rollResult--)
         {
-            m_currentPosition.next();
-            m_currentPosition.currentSquare().onPass(*this);
+            m_currentPosition->next();
+            m_currentPosition->currentSquare().onPass(*this);
         }
-        m_currentPosition.currentSquare().onEntry(*this);
+        m_currentPosition->currentSquare().onEntry(*this);
         std::cout << getName() << " has: " << getMoney() << '\n';
     }
 
@@ -71,7 +71,7 @@ public:
 
 private:
     std::string m_name;
-    CyclicBoard::iterator m_currentPosition;
+    std::unique_ptr<IBoard::Iiterator> m_currentPosition;
     int m_money;
     Dice m_dice;
 };
