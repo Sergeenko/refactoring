@@ -2,6 +2,7 @@
 
 #include "ISquare.hpp"
 #include "IPlayer.hpp"
+#include <iostream>
 
 class StartSquare : public ISquare {
 public:
@@ -57,4 +58,30 @@ public:
 private:
     Amount m_rewardValue{0};
     Amount m_depositValue{50};
+};
+
+class EstateSquare : public ISquare
+{
+public:
+    EstateSquare(Amount p_cost, Amount p_fine) : m_cost(p_cost), m_fine(p_fine) {}
+
+    void onEntry(IPlayer& p_player)
+    {
+        if(m_owner.expired())
+        {
+            m_owner = p_player.tryBuy(m_cost);
+        }
+        else if (p_player != *m_owner.lock())
+        {
+            std::cout << p_player.getName() << " was fined for stepping on " << m_owner.lock()->getName() << " field!" << std::endl;
+            p_player.subtractMoney(m_fine);
+            m_owner.lock()->addMoney(m_fine);
+        }
+    }
+    void onPass([[maybe_unused]] IPlayer& p_player){}
+
+private:
+    std::weak_ptr<IPlayer> m_owner;
+    Amount m_cost;
+    Amount m_fine;
 };

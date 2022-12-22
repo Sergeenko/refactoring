@@ -54,7 +54,13 @@ private:
             std::make_shared<PenaltySquare>(),
             std::make_shared<PenaltySquare>(),
             std::make_shared<PenaltySquare>(),
-            std::make_shared<DepositSquare>(),
+
+            std::make_shared<EstateSquare>(200, 50),
+            std::make_shared<EstateSquare>(200, 50),
+            std::make_shared<EstateSquare>(200, 50),
+            std::make_shared<EstateSquare>(200, 50),
+
+
             std::make_shared<PenaltySquare>(),
             std::make_shared<PenaltySquare>(),
             std::make_shared<PenaltySquare>(),

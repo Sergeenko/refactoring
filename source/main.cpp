@@ -7,9 +7,9 @@
 int main()
 {
     CyclicBoard l_cyclicBoard;
-    std::vector<std::unique_ptr<IPlayer>> l_players;
-    l_players.emplace_back(std::make_unique<HumanPlayer>("Staszek", std::make_unique<CyclicBoard::iterator>(l_cyclicBoard.begin()), Amount{5000}, Dice{2}));
-    l_players.emplace_back(std::make_unique<HumanPlayer>("Waldek", std::make_unique<CyclicBoard::iterator>(l_cyclicBoard.begin()), Amount{5000}, Dice{2}));
+    std::vector<std::shared_ptr<IPlayer>> l_players;
+    l_players.emplace_back(std::make_shared<HumanPlayer>("Staszek", std::make_unique<CyclicBoard::iterator>(l_cyclicBoard.begin()), Amount{5000}, Dice{2}));
+    l_players.emplace_back(std::make_shared<HumanPlayer>("Waldek", std::make_unique<CyclicBoard::iterator>(l_cyclicBoard.begin()), Amount{5000}, Dice{2}));
 
     Monopoly l_monopoly(std::move(l_players), l_cyclicBoard);
 

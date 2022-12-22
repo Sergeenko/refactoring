@@ -30,11 +30,11 @@ private:
     RollResult m_currentThrow{};
 };
 
-class HumanPlayer : public IPlayer
+class GenericPlayer : public IPlayer, public std::enable_shared_from_this<IPlayer>
 {
 public:
-    explicit HumanPlayer(std::string p_name, std::unique_ptr<IBoard::Iiterator> p_startingPosition, int p_startingMoney, Dice p_dice)
-        : m_name(std::move(p_name)), m_currentPosition(std::move(p_startingPosition)), m_money(p_startingMoney), m_dice(p_dice)  {}
+    explicit GenericPlayer(std::string p_name, std::unique_ptr<IBoard::Iiterator> p_startingPosition, int p_startingMoney, Dice p_dice)
+        : IPlayer(std::move(p_name)), m_currentPosition(std::move(p_startingPosition)), m_money(p_startingMoney), m_dice(p_dice)  {}
 
     void subtractMoney(Amount p_amount) override
     {
@@ -69,9 +69,47 @@ public:
         return m_name;
     }
 
-private:
-    std::string m_name;
+    bool operator==(IPlayer const& other) const override final
+    {
+        return m_name == other.getName();
+    }
+
+protected:
+    bool checkIfEnoughMoneyToBuy(Amount p_cost)
+    {
+        return m_money >= p_cost;
+    }
+
     std::unique_ptr<IBoard::Iiterator> m_currentPosition;
     int m_money;
     Dice m_dice;
+};
+
+class HumanPlayer : public GenericPlayer
+{
+public:
+    using GenericPlayer::GenericPlayer;
+
+    std::shared_ptr<IPlayer> tryBuy(Amount p_cost)
+    {
+        if (checkIfEnoughMoneyToBuy(p_cost))
+        {
+            std::string input;
+            std::cout << "Do You want to Buy this Estate? (yes/no) " << std::endl;
+            while(std::getline(std::cin, input))
+            {
+                if (input == "yes")
+                {
+                    m_money -= p_cost;
+                    return shared_from_this();
+                }
+                else if (input == "no")
+                {
+                    return nullptr;
+                }
+            }
+        }
+        return nullptr;
+    }
+
 };
