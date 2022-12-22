@@ -135,10 +135,10 @@ public:
             return;
         }
         wasSteppedPreviously = false;
-        std::cout << p_player.getName() << " stepped on Blackhole Square "  << '\n';
-        return;
+        std::cout << p_player.getName() << " stepped on Blackhole Square"  << '\n';
     }
-     void onPass(IPlayer& p_player) override
+
+    void onPass(IPlayer& p_player) override
     {
         onEntry(p_player);
     }
@@ -146,5 +146,4 @@ public:
 private:
     std::shared_ptr<ISquare> m_square;
     bool wasSteppedPreviously = false;
-
 };

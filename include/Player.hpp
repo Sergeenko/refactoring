@@ -7,27 +7,28 @@
 #include <utility>
 #include <string>
 #include <string_view>
+#include <algorithm>
 
 class Dice
 {
 public:
-    explicit Dice(size_t p_numberOfDice) : m_numberOfDice(p_numberOfDice) {}
+    explicit Dice(size_t p_numberOfDice) : rolls(p_numberOfDice, 0) {}
 
     RollResult roll()
     {
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> distrib(1, 6);
-        auto l_resultOne = distrib(gen);
-        auto l_resultTwo = distrib(gen);
-        m_currentThrow = l_resultOne + l_resultTwo;
+        for (auto& roll : rolls)
+        {
+            roll = distrib(gen);
+        }
 
-        return m_currentThrow;
+        return std::accumulate(rolls.begin(), rolls.end(), 0u);
     }
 
 private:
-    size_t m_numberOfDice;
-    RollResult m_currentThrow{};
+    std::vector<size_t> rolls;
 };
 
 class GenericPlayer : public IPlayer, public std::enable_shared_from_this<IPlayer>
