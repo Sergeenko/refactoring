@@ -66,13 +66,22 @@ private:
             std::make_shared<PenaltySquare>(),
             std::make_shared<PenaltySquare>(),
             std::make_shared<PenaltySquare>(),
+
+            std::make_shared<PrisonSquare>(),
+
+            std::make_shared<RandomSquare>(std::vector<std::shared_ptr<ISquare>>{
+                std::make_shared<PenaltySquare>(),
+                std::make_shared<PrisonSquare>(),
+                std::make_shared<RewardSquare>()}),
+
+
             std::make_shared<PenaltySquare>(),
             std::make_shared<PenaltySquare>(),
             std::make_shared<PenaltySquare>(),
             std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
+
+            std::make_shared<BlackholeSquare>(std::make_shared<PenaltySquare>()),
+
             std::make_shared<RewardSquare>(),
             std::make_shared<RewardSquare>(),
             std::make_shared<RewardSquare>(),
@@ -87,6 +96,9 @@ private:
             std::make_shared<RewardSquare>(),
             std::make_shared<RewardSquare>(),
             std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>()};
+            std::make_shared<RewardSquare>(),
+
+            std::make_shared<PrisonSquare>()
+            };
     CyclicBoard::iterator m_startPosition{m_squares, 0};
 };

@@ -3,6 +3,8 @@
 #include "ISquare.hpp"
 #include "IPlayer.hpp"
 #include <iostream>
+#include <random>
+
 
 class StartSquare : public ISquare
 {
@@ -85,4 +87,64 @@ private:
     std::weak_ptr<IPlayer> m_owner;
     Amount m_cost;
     Amount m_fine;
+};
+
+class PrisonSquare : public ISquare
+{
+public:
+    void onEntry(IPlayer& p_player) override
+    {
+        p_player.goToJail(3);
+    }
+     void onPass([[maybe_unused]] IPlayer& p_player) override {}
+};
+
+
+class RandomSquare : public ISquare
+{
+public:
+    RandomSquare(std::vector<std::shared_ptr<ISquare>> p_squares) : m_squares(std::move(p_squares)) {}
+
+    void onEntry(IPlayer& p_player) override
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(0, m_squares.size() - 1);
+        auto l_result = distrib(gen);
+
+        std::cout << p_player.getName() << " stepped on Random Square " << l_result << '\n';
+        m_squares[l_result]->onEntry(p_player);
+    }
+     void onPass([[maybe_unused]] IPlayer& p_player) override {}
+
+private:
+    std::vector<std::shared_ptr<ISquare>> m_squares;
+};
+
+class BlackholeSquare : public ISquare
+{
+public:
+    BlackholeSquare(std::shared_ptr<ISquare> p_square) : m_square(std::move(p_square)) {}
+
+    void onEntry(IPlayer& p_player) override
+    {
+        if(not wasSteppedPreviously)
+        {
+            m_square->onEntry(p_player);
+            wasSteppedPreviously = true;
+            return;
+        }
+        wasSteppedPreviously = false;
+        std::cout << p_player.getName() << " stepped on Blackhole Square "  << '\n';
+        return;
+    }
+     void onPass(IPlayer& p_player) override
+    {
+        onEntry(p_player);
+    }
+
+private:
+    std::shared_ptr<ISquare> m_square;
+    bool wasSteppedPreviously = false;
+
 };

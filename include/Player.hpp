@@ -47,6 +47,12 @@ public:
 
     void makeMove() override
     {
+        if (m_daysInJailLeft)
+        {
+            --m_daysInJailLeft;
+            std::cout << getName() << " days in jail left... " << m_daysInJailLeft << '\n';
+            return;
+        }
         auto l_rollResult = m_dice.roll();
         std::cout << getName() << " rolls: " << static_cast<unsigned>(l_rollResult) << '\n';
 
@@ -74,6 +80,12 @@ public:
         return m_name == other.getName();
     }
 
+    void goToJail(Amount p_daysInJail) override
+    {
+        m_daysInJailLeft = p_daysInJail;
+        std::cout << getName() << " jailed for... " << m_daysInJailLeft << " days." <<'\n';
+    }
+
 protected:
     bool checkIfEnoughMoneyToBuy(Amount p_cost) const
     {
@@ -83,6 +95,7 @@ protected:
     std::unique_ptr<IBoard::Iiterator> m_currentPosition;
     int m_money;
     Dice m_dice;
+    Amount m_daysInJailLeft{0};
 };
 
 class HumanPlayer : public GenericPlayer
