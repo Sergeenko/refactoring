@@ -33,6 +33,15 @@ public:
             });
     }
 
+    void printEndGameStats()
+    {
+        std::cout <<"====== THE GAME IS OVER ======" << '\n';
+
+        for(auto const& player : m_players)
+        {
+            std::cout << "====== " << player->getName() <<  " has: " << player->getMoney() << " ======" << '\n';
+        }
+    }
 private:
     std::vector<std::shared_ptr<IPlayer>> m_players;
     CyclicBoard m_board;

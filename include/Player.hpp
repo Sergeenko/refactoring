@@ -113,3 +113,48 @@ public:
     }
 
 };
+
+class GreedyAIPlayer : public GenericPlayer
+{
+public:
+    using GenericPlayer::GenericPlayer;
+
+    std::shared_ptr<IPlayer> tryBuy(Amount p_cost)
+    {
+        if (checkIfEnoughMoneyToBuy(p_cost))
+        {
+            m_money -= p_cost;
+            return shared_from_this();
+        }
+        return nullptr;
+    }
+};
+
+class RandomAIPlayer : public GenericPlayer
+{
+public:
+    using GenericPlayer::GenericPlayer;
+
+    std::shared_ptr<IPlayer> tryBuy(Amount p_cost)
+    {
+        if (checkIfEnoughMoneyToBuy(p_cost))
+        {
+            if (buyOrNotToBuy())
+            {
+                m_money -= p_cost;
+                return shared_from_this();
+            }
+        }
+        return nullptr;
+    }
+
+private:
+    bool buyOrNotToBuy()
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(0, 1);
+
+        return distrib(gen);
+    }
+};
