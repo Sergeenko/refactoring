@@ -104,7 +104,7 @@ class HumanPlayer : public GenericPlayer
 public:
     using GenericPlayer::GenericPlayer;
 
-    std::shared_ptr<IPlayer> tryBuy(Amount p_cost) override
+    std::weak_ptr<IPlayer> tryBuy(Amount p_cost) override
     {
         if (checkIfEnoughMoneyToBuy(p_cost))
         {
@@ -115,15 +115,15 @@ public:
                 if (input == "yes")
                 {
                     m_money -= p_cost;
-                    return shared_from_this();
+                    return weak_from_this();
                 }
                 else if (input == "no")
                 {
-                    return nullptr;
+                    return {};
                 }
             }
         }
-        return nullptr;
+        return {};
     }
 
 };
@@ -133,14 +133,14 @@ class GreedyAIPlayer : public GenericPlayer
 public:
     using GenericPlayer::GenericPlayer;
 
-    std::shared_ptr<IPlayer> tryBuy(Amount p_cost) override
+    std::weak_ptr<IPlayer> tryBuy(Amount p_cost) override
     {
         if (checkIfEnoughMoneyToBuy(p_cost))
         {
             m_money -= p_cost;
-            return shared_from_this();
+            return weak_from_this();
         }
-        return nullptr;
+        return {};
     }
 };
 
@@ -149,17 +149,17 @@ class RandomAIPlayer : public GenericPlayer
 public:
     using GenericPlayer::GenericPlayer;
 
-    std::shared_ptr<IPlayer> tryBuy(Amount p_cost) override
+    std::weak_ptr<IPlayer> tryBuy(Amount p_cost) override
     {
         if (checkIfEnoughMoneyToBuy(p_cost))
         {
             if (buyOrNotToBuy())
             {
                 m_money -= p_cost;
-                return shared_from_this();
+                return weak_from_this();
             }
         }
-        return nullptr;
+        return {};
     }
 
 private:

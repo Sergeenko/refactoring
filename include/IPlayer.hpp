@@ -13,7 +13,7 @@ public:
     virtual void makeMove() = 0;
     virtual int getMoney() const = 0;
     virtual std::string_view getName() const = 0;
-    virtual std::shared_ptr<IPlayer> tryBuy(Amount) = 0;
+    virtual std::weak_ptr<IPlayer> tryBuy(Amount) = 0;
     virtual void goToJail(Amount) = 0;
     virtual bool operator==(const IPlayer&) const = 0;
 

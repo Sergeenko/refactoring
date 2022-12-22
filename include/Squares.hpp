@@ -103,7 +103,7 @@ public:
 class RandomSquare : public ISquare
 {
 public:
-    RandomSquare(std::vector<std::shared_ptr<ISquare>> p_squares) : m_squares(std::move(p_squares)) {}
+    explicit RandomSquare(std::vector<std::shared_ptr<ISquare>> p_squares) : m_squares(std::move(p_squares)) {}
 
     void onEntry(IPlayer& p_player) override
     {
@@ -124,7 +124,7 @@ private:
 class BlackholeSquare : public ISquare
 {
 public:
-    BlackholeSquare(std::shared_ptr<ISquare> p_square) : m_square(std::move(p_square)) {}
+    explicit BlackholeSquare(std::shared_ptr<ISquare> p_square) : m_square(std::move(p_square)) {}
 
     void onEntry(IPlayer& p_player) override
     {
