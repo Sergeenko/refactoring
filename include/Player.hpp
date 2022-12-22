@@ -12,7 +12,7 @@
 class Dice
 {
 public:
-    explicit Dice(size_t p_numberOfDice) : rolls(p_numberOfDice, 0) {}
+    explicit Dice(size_t p_numberOfDice) : rolls(p_numberOfDice) {}
 
     RollResult roll()
     {
