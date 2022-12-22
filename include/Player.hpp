@@ -34,7 +34,7 @@ private:
 class GenericPlayer : public IPlayer, public std::enable_shared_from_this<IPlayer>
 {
 public:
-    explicit GenericPlayer(std::string p_name, std::unique_ptr<IBoard::Iiterator> p_startingPosition, int p_startingMoney, Dice p_dice)
+    explicit GenericPlayer(std::string p_name, std::unique_ptr<IBoard::Iiterator> p_startingPosition, Amount p_startingMoney, Dice p_dice)
         : IPlayer(std::move(p_name)), m_currentPosition(std::move(p_startingPosition)), m_money(p_startingMoney), m_dice(p_dice)  {}
 
     void subtractMoney(Amount p_amount) override
