@@ -4,7 +4,8 @@
 #include "IPlayer.hpp"
 #include <iostream>
 
-class StartSquare : public ISquare {
+class StartSquare : public ISquare
+{
 public:
     void onEntry([[maybe_unused]] IPlayer& p_player) override {}
     void onPass(IPlayer& p_player) override
@@ -65,7 +66,7 @@ class EstateSquare : public ISquare
 public:
     EstateSquare(Amount p_cost, Amount p_fine) : m_cost(p_cost), m_fine(p_fine) {}
 
-    void onEntry(IPlayer& p_player)
+    void onEntry(IPlayer& p_player) override
     {
         if(m_owner.expired())
         {
@@ -78,7 +79,7 @@ public:
             m_owner.lock()->addMoney(m_fine);
         }
     }
-    void onPass([[maybe_unused]] IPlayer& p_player){}
+    void onPass([[maybe_unused]] IPlayer& p_player) override {}
 
 private:
     std::weak_ptr<IPlayer> m_owner;

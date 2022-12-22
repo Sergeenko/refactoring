@@ -69,13 +69,13 @@ public:
         return m_name;
     }
 
-    bool operator==(IPlayer const& other) const override final
+    bool operator==(IPlayer const& other) const final
     {
         return m_name == other.getName();
     }
 
 protected:
-    bool checkIfEnoughMoneyToBuy(Amount p_cost)
+    bool checkIfEnoughMoneyToBuy(Amount p_cost) const
     {
         return m_money >= p_cost;
     }
@@ -90,7 +90,7 @@ class HumanPlayer : public GenericPlayer
 public:
     using GenericPlayer::GenericPlayer;
 
-    std::shared_ptr<IPlayer> tryBuy(Amount p_cost)
+    std::shared_ptr<IPlayer> tryBuy(Amount p_cost) override
     {
         if (checkIfEnoughMoneyToBuy(p_cost))
         {
@@ -119,7 +119,7 @@ class GreedyAIPlayer : public GenericPlayer
 public:
     using GenericPlayer::GenericPlayer;
 
-    std::shared_ptr<IPlayer> tryBuy(Amount p_cost)
+    std::shared_ptr<IPlayer> tryBuy(Amount p_cost) override
     {
         if (checkIfEnoughMoneyToBuy(p_cost))
         {
@@ -135,7 +135,7 @@ class RandomAIPlayer : public GenericPlayer
 public:
     using GenericPlayer::GenericPlayer;
 
-    std::shared_ptr<IPlayer> tryBuy(Amount p_cost)
+    std::shared_ptr<IPlayer> tryBuy(Amount p_cost) override
     {
         if (checkIfEnoughMoneyToBuy(p_cost))
         {
@@ -149,7 +149,7 @@ public:
     }
 
 private:
-    bool buyOrNotToBuy()
+    static bool buyOrNotToBuy()
     {
         std::random_device rd;
         std::mt19937 gen(rd());
