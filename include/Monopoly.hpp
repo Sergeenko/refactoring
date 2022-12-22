@@ -4,33 +4,26 @@
 #include <algorithm>
 #include <memory>
 #include <iostream>
+#include "Player.hpp"
 
 class IPlayer;
 
+template<typename BoardType>
 class Monopoly
 {
 public:
-
-    Monopoly(std::vector<std::shared_ptr<IPlayer>> p_players, CyclicBoard p_board)
-        : m_players(std::move(p_players)), m_board(std::move(p_board)) {}
-
-    void makeRound()
+    template<typename PlayerType>
+    void addPlayer(std::string p_name, Amount p_startingMoney, Dice p_dice)
     {
-        for(auto& player : m_players)
-        {
-            player->makeMove();
-        }
+        m_players.emplace_back(std::make_shared<PlayerType>(std::move(p_name), std::make_unique<typename BoardType::iterator>(m_board.begin()), p_startingMoney, p_dice));
     }
 
-    bool isEndGame()
+    void play()
     {
-        return std::any_of(
-            m_players.begin(),
-            m_players.end(),
-            [](const std::shared_ptr<IPlayer>& p_player)
-            {
-                return p_player->getMoney() <= 0;
-            });
+        while(not isEndGame())
+        {
+            makeRound();
+        }
     }
 
     void printEndGameStats()
@@ -43,7 +36,25 @@ public:
         }
     }
 private:
+    void makeRound()
+    {
+        for(auto& player : m_players)
+        {
+            player->makeMove();
+        }
+    }
+
+    bool isEndGame()
+    {
+        return std::any_of(
+                m_players.begin(),
+                m_players.end(),
+                [](const std::shared_ptr<IPlayer>& p_player)
+                {
+                    return p_player->getMoney() <= 0;
+                });
+    }
+
     std::vector<std::shared_ptr<IPlayer>> m_players;
-    CyclicBoard m_board;
-    Amount m_startReward{200};
+    BoardType m_board;
 };
