@@ -20,15 +20,9 @@ public:
             return *this;
         }
 
-        ISquare& currentSquare() const override
+        [[nodiscard]] ISquare& currentSquare() const override
         {
             return *m_squares[m_currentIndex];
-        }
-
-        bool operator==(const iterator& other) const
-        {
-            return (m_currentIndex == other.m_currentIndex) and
-                (&m_squares == &other.m_squares);
         }
 
     private:
@@ -41,64 +35,60 @@ public:
         return m_startPosition;
     }
 
-    size_t getSize() const
-    {
-        return m_squares.size();
-    }
 private:
     std::vector<std::shared_ptr<ISquare>> m_squares{
-            std::make_shared<StartSquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
+            std::make_shared<Start>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
 
-            std::make_shared<EstateSquare>(200, 50),
-            std::make_shared<EstateSquare>(200, 50),
-            std::make_shared<EstateSquare>(200, 50),
-            std::make_shared<EstateSquare>(200, 50),
+            std::make_shared<Estate>(200, 50),
+            std::make_shared<Estate>(200, 50),
+            std::make_shared<Estate>(200, 50),
+            std::make_shared<Estate>(200, 50),
 
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
 
-            std::make_shared<PrisonSquare>(),
+            std::make_shared<Prison>(),
 
-            std::make_shared<RandomSquare>(std::vector<std::shared_ptr<ISquare>>{
-                std::make_shared<PenaltySquare>(),
-                std::make_shared<PrisonSquare>(),
-                std::make_shared<RewardSquare>()}),
+            std::make_shared<Random>(std::vector<std::shared_ptr<ISquare>>{
+                std::make_shared<Penalty>(),
+                std::make_shared<Prison>(),
+                std::make_shared<Reward>()}),
 
 
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
-            std::make_shared<PenaltySquare>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
+            std::make_shared<Penalty>(),
 
-            std::make_shared<BlackholeSquare>(std::make_shared<PenaltySquare>()),
+            std::make_shared<Blackhole>(std::make_shared<Penalty>()),
 
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<DepositSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
-            std::make_shared<RewardSquare>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Deposit>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
+            std::make_shared<Reward>(),
 
-            std::make_shared<PrisonSquare>()
+            std::make_shared<Prison>()
             };
     CyclicBoard::iterator m_startPosition{m_squares, 0};
 };

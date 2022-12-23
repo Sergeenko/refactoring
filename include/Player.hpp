@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IPlayer.hpp"
+#include "IStrategy.hpp"
 #include "Aliases.hpp"
 #include <cstdlib>
 #include <random>
@@ -12,35 +13,40 @@
 class Dice
 {
 public:
-    explicit Dice(size_t p_numberOfDice) : rolls(p_numberOfDice) {}
+    explicit Dice(size_t p_numberOfDice) : m_numberOfDice(p_numberOfDice) {}
 
     RollResult roll()
     {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distrib(1, 6);
-        for (auto& roll : rolls)
+        RollResult result{};
+        for (auto dice = m_numberOfDice; dice != 0; --dice)
         {
-            roll = distrib(gen);
+            result += distrib(m_gen);
         }
-
-        return std::accumulate(rolls.begin(), rolls.end(), 0u);
+        return result;
     }
 
 private:
-    std::vector<size_t> rolls;
+    size_t m_numberOfDice;
+    std::mt19937 m_gen{std::random_device()()};
+    std::uniform_int_distribution<> distrib{1,6};
 };
 
-class GenericPlayer : public IPlayer, public std::enable_shared_from_this<IPlayer>
+template<typename BoardType>
+class Player : public IPlayer
 {
 public:
-    explicit GenericPlayer(std::string p_name, std::unique_ptr<IBoard::Iiterator> p_startingPosition, Amount p_startingMoney, Dice p_dice)
-        : IPlayer(std::move(p_name)), m_currentPosition(std::move(p_startingPosition)), m_money(p_startingMoney), m_dice(p_dice)  {}
+    explicit Player(std::string p_name, typename BoardType::iterator p_startingPosition, Amount p_startingMoney, Dice p_dice, IStrategy& p_strategy)
+        : m_name(std::move(p_name)),
+          m_currentPosition(std::move(p_startingPosition)),
+          m_money(p_startingMoney),
+          m_dice(std::move(p_dice)),
+          m_strategy(p_strategy) {}
 
     void subtractMoney(Amount p_amount) override
     {
         m_money -= p_amount;
     }
+
     void addMoney(Amount p_amount) override
     {
         m_money += p_amount;
@@ -59,14 +65,14 @@ public:
 
         while (l_rollResult--)
         {
-            m_currentPosition->next();
-            m_currentPosition->currentSquare().onPass(*this);
+            m_currentPosition.next();
+            m_currentPosition.currentSquare().onPass(*this);
         }
-        m_currentPosition->currentSquare().onEntry(*this);
+        m_currentPosition.currentSquare().onEntry(*this);
         std::cout << getName() << " has: " << getMoney() << '\n';
     }
 
-    int getMoney() const override
+    Amount getMoney() const override
     {
         return m_money;
     }
@@ -76,99 +82,24 @@ public:
         return m_name;
     }
 
-    bool operator==(IPlayer const& other) const final
-    {
-        return m_name == other.getName();
-    }
-
     void goToJail(Amount p_daysInJail) override
     {
         m_daysInJailLeft = p_daysInJail;
         std::cout << getName() << " jailed for... " << m_daysInJailLeft << " days." <<'\n';
     }
 
-protected:
-    bool checkIfEnoughMoneyToBuy(Amount p_cost) const
-    {
-        return m_money >= p_cost;
-    }
-
-    std::unique_ptr<IBoard::Iiterator> m_currentPosition;
-    int m_money;
-    Dice m_dice;
-    Amount m_daysInJailLeft{0};
-};
-
-class HumanPlayer : public GenericPlayer
-{
-public:
-    using GenericPlayer::GenericPlayer;
-
     std::weak_ptr<IPlayer> tryBuy(Amount p_cost) override
     {
-        if (checkIfEnoughMoneyToBuy(p_cost))
-        {
-            std::string input;
-            std::cout << "Do You want to Buy this Estate? (yes/no) " << std::endl;
-            while(std::getline(std::cin, input))
-            {
-                if (input == "yes")
-                {
-                    m_money -= p_cost;
-                    return weak_from_this();
-                }
-                else if (input == "no")
-                {
-                    return {};
-                }
-            }
-        }
-        return {};
-    }
-
-};
-
-class GreedyAIPlayer : public GenericPlayer
-{
-public:
-    using GenericPlayer::GenericPlayer;
-
-    std::weak_ptr<IPlayer> tryBuy(Amount p_cost) override
-    {
-        if (checkIfEnoughMoneyToBuy(p_cost))
-        {
-            m_money -= p_cost;
-            return weak_from_this();
-        }
-        return {};
-    }
-};
-
-class RandomAIPlayer : public GenericPlayer
-{
-public:
-    using GenericPlayer::GenericPlayer;
-
-    std::weak_ptr<IPlayer> tryBuy(Amount p_cost) override
-    {
-        if (checkIfEnoughMoneyToBuy(p_cost))
-        {
-            if (buyOrNotToBuy())
-            {
-                m_money -= p_cost;
-                return weak_from_this();
-            }
-        }
-        return {};
+        return m_strategy.tryBuy(*this, p_cost);
     }
 
 private:
-    static bool buyOrNotToBuy()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distrib(0, 1);
-
-        return distrib(gen);
-    }
+    std::string m_name;
+    typename BoardType::iterator m_currentPosition;
+    Amount m_money;
+    Dice m_dice;
+    Amount m_daysInJailLeft{0};
+    IStrategy& m_strategy;
 };
+
+

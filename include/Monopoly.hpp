@@ -1,21 +1,29 @@
+#pragma once
+
 #include <vector>
+#include <tuple>
 #include <utility>
-#include "Board.hpp"
 #include <algorithm>
 #include <memory>
 #include <iostream>
+#include "Board.hpp"
 #include "Player.hpp"
-
-class IPlayer;
+#include "Strategy.hpp"
 
 template<typename BoardType>
 class Monopoly
 {
 public:
-    template<typename PlayerType>
+    template<typename Strategy>
     void addPlayer(std::string p_name, Amount p_startingMoney, Dice p_dice)
     {
-        m_players.emplace_back(std::make_shared<PlayerType>(std::move(p_name), std::make_unique<typename BoardType::iterator>(m_board.begin()), p_startingMoney, p_dice));
+        m_players.emplace_back(
+                std::make_shared<Player<BoardType>>(
+                        std::move(p_name),
+                        m_board.begin(),
+                        p_startingMoney,
+                        std::move(p_dice),
+                        std::get<Strategy>(m_strategies)));
     }
 
     void play()
@@ -57,4 +65,5 @@ private:
 
     std::vector<std::shared_ptr<IPlayer>> m_players;
     BoardType m_board;
+    std::tuple<Human, GreedyAI, RandomAI> m_strategies;
 };
