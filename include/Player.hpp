@@ -8,7 +8,6 @@
 #include <utility>
 #include <string>
 #include <string_view>
-#include <algorithm>
 
 class Dice
 {
@@ -35,7 +34,7 @@ template<typename BoardType>
 class Player : public IPlayer
 {
 public:
-    explicit Player(std::string p_name, typename BoardType::iterator p_startingPosition, Amount p_startingMoney, Dice p_dice, IStrategy& p_strategy)
+    explicit Player(std::string p_name, Amount p_startingMoney, Dice p_dice, typename BoardType::iterator p_startingPosition, IStrategy& p_strategy)
         : m_name(std::move(p_name)),
           m_currentPosition(std::move(p_startingPosition)),
           m_money(p_startingMoney),

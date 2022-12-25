@@ -35,6 +35,10 @@ public:
         return m_startPosition;
     }
 
+    size_t getSize() const override
+    {
+	return m_squares.size();
+    }
 private:
     std::vector<std::shared_ptr<ISquare>> m_squares{
             std::make_shared<Start>(),

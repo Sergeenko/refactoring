@@ -1,6 +1,6 @@
 #include <gtest/gtest.h> // googletest header file
 #include <gmock/gmock.h>
-
+#include "Strategy.hpp"
 #include "Board.hpp"
 #include "Player.hpp"
 #include <memory>
@@ -40,12 +40,13 @@ TEST_F(BoardTest, checkCyclicity)
         l_iterator.next();
     }
 
-    ASSERT_EQ(l_iterator, m_board.begin());
+    ASSERT_EQ(&l_iterator.currentSquare(), &m_board.begin().currentSquare());
 }
 
 struct PlayerTest : BoardTest
 {
-    HumanPlayer m_player{"TestPlayer", std::make_unique<CyclicBoard::iterator>(m_board.begin()), 5000, Dice{2}};
+    Human m_strategy;
+    Player<CyclicBoard> m_player{"TestPlayer", 5000, Dice{2}, m_board.begin(), m_strategy};
     NiceMock<SquareMock> m_squareMock;
 };
 

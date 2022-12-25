@@ -14,16 +14,14 @@ template<typename BoardType>
 class Monopoly
 {
 public:
-    template<typename Strategy>
-    void addPlayer(std::string p_name, Amount p_startingMoney, Dice p_dice)
+    template<typename Strategy, typename ... Args>
+    void addPlayer(Args&&... p_args)
     {
         m_players.emplace_back(
                 std::make_shared<Player<BoardType>>(
-                        std::move(p_name),
-                        m_board.begin(),
-                        p_startingMoney,
-                        std::move(p_dice),
-                        std::get<Strategy>(m_strategies)));
+			std::forward<Args>(p_args)...,
+			m_board.begin(),
+			std::get<Strategy>(m_strategies)));
     }
 
     void play()
